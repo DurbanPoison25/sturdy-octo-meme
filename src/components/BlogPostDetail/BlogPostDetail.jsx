@@ -2,7 +2,7 @@
 import React from 'react';
 import styles from './BlogPostDetail.module.css';
 
-const BlogPostDetail = ({ title, content, author, date }) => {
+const BlogPostDetail = ({ title, content, author, date, onBack, onEdit, onDelete }) => {
   if (!title || !content || !author || !date) {
     return <p className={styles.notFound}>Blog post not found.</p>;
   }
@@ -22,6 +22,12 @@ const BlogPostDetail = ({ title, content, author, date }) => {
         className={styles.content}
         dangerouslySetInnerHTML={{ __html: content }}
       />
+
+      <div className={styles.actions}>
+        <button className={styles.backButton} onClick={onBack}>← Back</button>
+        <button onClick={onEdit}>Edit</button>
+        <button onClick={onDelete}>Delete</button>
+      </div>
     </article>
   );
 };

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import BlogPostList from './components/BlogPostList/BlogPostList';
 import BlogPostForm from './components/BlogPostForm/BlogPostForm';
+import DeleteButton from './components/DeletePost/DeleteButton';
+import ConfirmationDialog from './components/DeletePost/ConfirmationDialog';
 import './App.css';
 
 const App = () => {
@@ -34,6 +36,8 @@ const App = () => {
   const [editingPost, setEditingPost] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [viewedPost, setViewedPost] = useState(null);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [postToDelete, setPostToDelete] = useState(null);
 
   const handleSubmit = (newPost) => {
     if (editingPost) {
@@ -63,19 +67,41 @@ const App = () => {
     setViewedPost(null);
   };
 
+  const handleDeleteClick = (post) => {
+    setPostToDelete(post);
+    setShowDeleteDialog(true);
+  };
+
+  const handleConfirmDelete = () => {
+    setPosts((prev) => prev.filter((p) => p.id !== postToDelete.id));
+    setPostToDelete(null);
+    setShowDeleteDialog(false);
+    setViewedPost(null);
+  };
+
   return (
     <div>
       <h1>Blog Posts</h1>
       {!viewedPost && <button onClick={handleAddNew}>Add Post</button>}
 
       {showForm && (
-        <div className="modal">
-          <div className="modal-content">
-            <BlogPostForm post={editingPost} onSubmit={handleSubmit} />
-            <button onClick={() => setShowForm(false)}>Cancel</button>
-          </div>
-        </div>
-      )}
+  <div className="modal">
+    <div className="modal-content">
+      <BlogPostForm post={editingPost} onSubmit={handleSubmit} />
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '1rem' }}>
+        <button onClick={() => setShowForm(false)}>Cancel</button>
+        {editingPost && (
+          <DeleteButton onClick={() => {
+            setPostToDelete(editingPost);
+            setShowForm(false);
+            setShowDeleteDialog(true);
+          }} />
+        )}
+      </div>
+    </div>
+  </div>
+)}
+
 
       {viewedPost ? (
         <div className="modal">
@@ -84,7 +110,10 @@ const App = () => {
             <p><strong>By:</strong> {viewedPost.author}</p>
             <p><strong>Date:</strong> {viewedPost.date}</p>
             <div dangerouslySetInnerHTML={{ __html: viewedPost.content }} />
-            <button onClick={handleBack}>Back</button>
+            <div style={{ marginTop: '20px' }}>
+              <button onClick={handleBack}>Back</button>
+              <DeleteButton onClick={() => handleDeleteClick(viewedPost)} />
+            </div>
           </div>
         </div>
       ) : (
@@ -95,8 +124,15 @@ const App = () => {
             setShowForm(true);
           }}
           onView={handleView}
+          onDelete={handleDeleteClick}
         />
       )}
+
+      <ConfirmationDialog
+        isOpen={showDeleteDialog}
+        onClose={() => setShowDeleteDialog(false)}
+        onConfirm={handleConfirmDelete}
+      />
     </div>
   );
 };

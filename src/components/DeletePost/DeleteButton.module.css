@@ -1,0 +1,24 @@
+/* components/DeletePost/DeleteButton.module.css */
+.deleteButton {
+    background-color: #FF0000;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    min-height: 44px;
+  }
+  
+  .deleteButton:hover {
+    background-color: #cc0000;
+  }
+  
+  @media (max-width: 768px) {
+    .deleteButton {
+      width: 100%;
+    }
+  }
+  

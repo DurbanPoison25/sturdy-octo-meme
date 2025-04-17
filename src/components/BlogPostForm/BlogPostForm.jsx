@@ -1,8 +1,9 @@
 // src/components/BlogPostForm/BlogPostForm.js
 import React, { useState } from 'react';
 import styles from './BlogPostForm.module.css';
+import DeleteButton from '../DeletePost/DeleteButton';
 
-const BlogPostForm = ({ post, onSubmit }) => {
+const BlogPostForm = ({ post, onSubmit, onDelete }) => {
   const [title, setTitle] = useState(post?.title || '');
   const [content, setContent] = useState(post?.content || '');
   const [author, setAuthor] = useState(post?.author || '');
@@ -23,11 +24,14 @@ const BlogPostForm = ({ post, onSubmit }) => {
     } else {
       setIsSubmitting(true);
       onSubmit({ title, content, author, date });
+      setIsSubmitting(false);
     }
   };
 
   return (
     <form className={styles.blogPostForm} onSubmit={handleSubmit} noValidate>
+      <h2>{post ? 'Edit Blog Post' : 'Create New Blog Post'}</h2>
+
       <div className={styles.formGroup}>
         <label htmlFor="title">Title</label>
         <input
@@ -35,6 +39,7 @@ const BlogPostForm = ({ post, onSubmit }) => {
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          autoFocus
         />
         {errors.title && <p className={styles.error}>{errors.title}</p>}
       </div>
@@ -75,6 +80,9 @@ const BlogPostForm = ({ post, onSubmit }) => {
         <button type="submit" disabled={isSubmitting}>
           {isSubmitting ? 'Submitting...' : 'Submit'}
         </button>
+        {post && onDelete && (
+          <DeleteButton onClick={() => onDelete(post)} />
+        )}
       </div>
     </form>
   );

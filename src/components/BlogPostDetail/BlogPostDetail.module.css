@@ -74,5 +74,50 @@
       font-size: 14px;
       line-height: 1.4;
     }
+
+    .actions {
+      display: flex;
+      justify-content: flex-start;
+      gap: 10px;
+      margin-top: 30px;
+    }
+    
+    .actions button,
+    .backButton {
+      padding: 10px 16px;
+      font-size: 14px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background-color 0.3s ease;
+    }
+    
+    .backButton {
+      background-color: #e0e0e0;
+      color: #333;
+    }
+    
+    .backButton:hover {
+      background-color: #ccc;
+    }
+    
+    .actions button:first-of-type {
+      background-color: #007BFF;
+      color: white;
+    }
+    
+    .actions button:first-of-type:hover {
+      background-color: #0056b3;
+    }
+    
+    .actions button:last-of-type {
+      background-color: #dc3545;
+      color: white;
+    }
+    
+    .actions button:last-of-type:hover {
+      background-color: #c82333;
+    }    
   }
   
